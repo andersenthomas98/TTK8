@@ -19,10 +19,11 @@
 
 /*************************/
 
-
 /******** Encoder right ********/
 #define ENCA2 PORTD3 // (INT1) (Arduino Uno pin 3)
 #define ENCB2 PORTD7 // (Arduino Uno pin 7)
 /*************************/
+
+
 
 #endif /* DEFINES_H_ */

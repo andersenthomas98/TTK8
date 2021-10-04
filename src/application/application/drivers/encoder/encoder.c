@@ -16,7 +16,7 @@ int encoder_ticks_right = 0;
 
 void encoder_init(void) {
 	
-	// Set digital inputs with internal pull-up
+	// Set digital inputs with internal pull-up (unsure if internal pull-up should be used)
 	DDRD &= ~(1 << ENCA1);
 	PORTD |= (1 << ENCA1);
 	
