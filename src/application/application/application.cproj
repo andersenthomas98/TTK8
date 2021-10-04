@@ -107,6 +107,9 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="defines.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\encoder\encoder.c">
       <SubType>compile</SubType>
     </Compile>

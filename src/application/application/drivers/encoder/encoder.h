@@ -9,8 +9,13 @@
 #ifndef ENCODER_H_
 #define ENCODER_H_
 
+void encoder_init(void);
 
+int encoder_read_tick(int encoder_pin);
 
+int encoder_get_accumulated_ticks_left(void);
+
+int encoder_get_accumulated_ticks_right(void);
 
 
 #endif /* ENCODER_H_ */
