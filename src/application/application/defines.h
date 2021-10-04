@@ -14,15 +14,15 @@
 #define BUILTIN_LED PORTB5
 
 /******** Encoder left ********/
-#define ENCA1 PORTD2 // (INT0)
-#define ENCB1 PORTD6
+#define ENCA1 PORTD2 // (INT0) (Arduino Uno pin 2)
+#define ENCB1 PORTD6 // (Arduino Uno pin 6)
 
 /*************************/
 
 
 /******** Encoder right ********/
-#define ENCA2 PORTD3 // (INT1)
-#define ENCB2 PORTD7
+#define ENCA2 PORTD3 // (INT1) (Arduino Uno pin 3)
+#define ENCB2 PORTD7 // (Arduino Uno pin 7)
 /*************************/
 
 #endif /* DEFINES_H_ */
