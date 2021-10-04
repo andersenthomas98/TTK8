@@ -11,7 +11,7 @@
 
 #include <avr/io.h>
 
-#define BUILTIN_LED PORTB5
+#define BUILTIN_LED PORTB5 // (Arduino Uno pin 13)
 
 /******** Encoder left ********/
 #define ENCA1 PORTD2 // (INT0) (Arduino Uno pin 2)
