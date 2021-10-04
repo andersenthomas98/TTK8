@@ -16,12 +16,13 @@
 
 #include "drivers/usart/usart.h"
 #include "drivers/encoder/encoder.h"
-
+#include "drivers/pwm/pwm.h"
 
 int main(void)
 {
 	usart_init(UBRR);
 	encoder_init();
+	pwm_init();
 	
 	printf("Starting application\n\r");
 	
@@ -37,10 +38,19 @@ int main(void)
 		_delay_ms(3000);
 		printf("on\n\r");
 		PORTB = (1<<BUILTIN_LED);
-		*/
 		int ticksL = encoder_get_accumulated_ticks_left();
 		int ticksR = encoder_get_accumulated_ticks_right();
-		printf("L = %d; R = %d\n\r", ticksL, ticksR);
+		printf("L = %d; R = %d\n\r", ticksL, ticksR);*/
+		for (int d=0; d<=100; d++) {
+			pwm_set_duty_cycle(d);
+			_delay_ms(50);
+		}
+		for (int d=100; d>=0; d--) {
+			pwm_set_duty_cycle(d);
+			_delay_ms(50);
+		}
+		
+		
 		
 	}
 }

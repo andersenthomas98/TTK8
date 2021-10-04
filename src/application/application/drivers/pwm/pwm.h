@@ -12,7 +12,7 @@
 
 void pwm_init(void);
 
-void pwm_set_duty_cycle(int duty);
+void pwm_set_duty_cycle(int d);
 
 
 

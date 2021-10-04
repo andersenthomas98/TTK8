@@ -15,7 +15,7 @@
 
 /******** Encoder left ********/
 #define ENCA1 PORTD2 // (INT0) (Arduino Uno pin 2)
-#define ENCB1 PORTD6 // (Arduino Uno pin 6)
+#define ENCB1 PORTD4 // (Arduino Uno pin 4)
 
 /*************************/
 
@@ -24,9 +24,9 @@
 #define ENCB2 PORTD7 // (Arduino Uno pin 7)
 /*************************/
 
-/******** PWM *********/
-#define PWM1 OC1A // (PB0)
-#define PWM2 OC1B // (PB1)
+/******** PWM (8-bit) *********/
+#define PWM1 PD6 //OC0A // (PD6)
+#define PWM2 PD5 //OC0B // (PD5)
 
 
 
