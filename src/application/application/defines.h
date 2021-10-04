@@ -24,6 +24,12 @@
 #define ENCB2 PORTD7 // (Arduino Uno pin 7)
 /*************************/
 
+/******** PWM *********/
+#define PWM1 OC1A // (PB0)
+#define PWM2 OC1B // (PB1)
 
+
+
+/**********************/
 
 #endif /* DEFINES_H_ */

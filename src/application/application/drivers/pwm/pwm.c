@@ -7,8 +7,7 @@
 
 
 void pwm_init(void) {
-	
-} 
+	// Compare output mode: Fast PWM mode
 
 void pwm_set_duty_cycle(int duty) {
 	
