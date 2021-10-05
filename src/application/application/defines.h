@@ -15,6 +15,8 @@
 
 /*
 	Be aware that the application will not function as intended if the pins are not defined on the same port as they are now
+	TODO:
+		- Make it easier to switch port/pin layout
 */
 
 /******** Encoder left ********/
@@ -29,12 +31,16 @@
 /*************************/
 
 /******** PWM left(8-bit) *********/
+// Uses timer/counter0 on atmega328p
+
 #define MIN_PWM_DUTY_LEFT 135
 #define PWM1 PD6 //OC0A // (Arduino Uno pin 6)
 
 /**********************/
 
 /******** PWM right(8-bit) *********/
+// Uses timer/counter0 on atmega328p
+
 #define MIN_PWM_DUTY_RIGHT 135
 #define PWM2 PD5 //OC0B // (Arduino Uno pin 5)
 
