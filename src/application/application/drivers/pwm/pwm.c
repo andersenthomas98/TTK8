@@ -39,6 +39,5 @@ void pwm_set_duty_cycle_left(float d) {
 void pwm_set_duty_cycle_right(float d) {
 	
 	float value = d / 100.0 * (255 - MIN_PWM_DUTY_RIGHT) + MIN_PWM_DUTY_RIGHT;
-	printf("%d\n\r", (uint8_t) value);
 	OCR0B = (uint8_t)value;
 }
