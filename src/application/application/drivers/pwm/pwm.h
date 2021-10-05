@@ -12,8 +12,9 @@
 
 void pwm_init(void);
 
-void pwm_set_duty_cycle(int d);
+void pwm_set_duty_cycle_left(float d);
 
+void pwm_set_duty_cycle_right(float d);
 
 
 #endif /* PWM_H_ */

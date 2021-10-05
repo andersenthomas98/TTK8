@@ -28,11 +28,15 @@
 #define ENCB2 PORTD7 // (Arduino Uno pin 7)
 /*************************/
 
-/******** PWM (8-bit) *********/
+/******** PWM left(8-bit) *********/
+#define MIN_PWM_DUTY_LEFT 135
 #define PWM1 PD6 //OC0A // (Arduino Uno pin 6)
+
+/**********************/
+
+/******** PWM right(8-bit) *********/
+#define MIN_PWM_DUTY_RIGHT 135
 #define PWM2 PD5 //OC0B // (Arduino Uno pin 5)
-
-
 
 /**********************/
 

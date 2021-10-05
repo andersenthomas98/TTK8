@@ -29,6 +29,8 @@ int main(void)
 	//DDRB = (1<<BUILTIN_LED); //PB7 is digital pin 13 (LED), set as output
 	//PORTB = (1<<BUILTIN_LED); //Set PB7 high to turn on LED
 	
+	pwm_set_duty_cycle_right(100);
+	
 	while(1)
 	{
 		/*
@@ -42,12 +44,12 @@ int main(void)
 		int ticksR = encoder_get_accumulated_ticks_right();
 		printf("L = %d; R = %d\n\r", ticksL, ticksR);*/
 		for (int d=0; d<=100; d++) {
-			pwm_set_duty_cycle(d);
-			_delay_ms(50);
+			pwm_set_duty_cycle_left(d);
+			_delay_ms(100);
 		}
 		for (int d=100; d>=0; d--) {
-			pwm_set_duty_cycle(d);
-			_delay_ms(50);
+			pwm_set_duty_cycle_left(d);
+			_delay_ms(100);
 		}
 		
 		
