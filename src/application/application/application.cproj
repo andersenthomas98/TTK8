@@ -116,6 +116,12 @@
     <Compile Include="drivers\encoder\encoder.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\motor\motor.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\motor\motor.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\pwm\pwm.c">
       <SubType>compile</SubType>
     </Compile>
@@ -135,6 +141,7 @@
   <ItemGroup>
     <Folder Include="drivers" />
     <Folder Include="drivers\encoder" />
+    <Folder Include="drivers\motor" />
     <Folder Include="drivers\pwm" />
     <Folder Include="drivers\usart" />
   </ItemGroup>

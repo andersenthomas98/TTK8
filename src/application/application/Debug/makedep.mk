@@ -4,6 +4,8 @@
 
 drivers\encoder\encoder.c
 
+drivers\motor\motor.c
+
 drivers\pwm\pwm.c
 
 drivers\usart\usart.c

@@ -35,6 +35,7 @@ LINKER_SCRIPT_DEP:=
 SUBDIRS :=  \
 ../drivers \
 ../drivers/encoder \
+../drivers/motor \
 ../drivers/pwm \
 ../drivers/usart
 
@@ -42,6 +43,7 @@ SUBDIRS :=  \
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../drivers/encoder/encoder.c \
+../drivers/motor/motor.c \
 ../drivers/pwm/pwm.c \
 ../drivers/usart/usart.c \
 ../main.c
@@ -55,24 +57,28 @@ ASM_SRCS +=
 
 OBJS +=  \
 drivers/encoder/encoder.o \
+drivers/motor/motor.o \
 drivers/pwm/pwm.o \
 drivers/usart/usart.o \
 main.o
 
 OBJS_AS_ARGS +=  \
 drivers/encoder/encoder.o \
+drivers/motor/motor.o \
 drivers/pwm/pwm.o \
 drivers/usart/usart.o \
 main.o
 
 C_DEPS +=  \
 drivers/encoder/encoder.d \
+drivers/motor/motor.d \
 drivers/pwm/pwm.d \
 drivers/usart/usart.d \
 main.d
 
 C_DEPS_AS_ARGS +=  \
 drivers/encoder/encoder.d \
+drivers/motor/motor.d \
 drivers/pwm/pwm.d \
 drivers/usart/usart.d \
 main.d
@@ -92,6 +98,13 @@ LINKER_SCRIPT_DEP+=
 
 # AVR32/GNU C Compiler
 drivers/encoder/encoder.o: ../drivers/encoder/encoder.c
+	@echo Building file: $<
+	@echo Invoking: XC8 C Compiler : 2.31
+	$(QUOTE)C:\Program Files\Microchip\xc8\v2.31\bin\xc8-cc.exe$(QUOTE)  -mcpu=ATmega328P  -mdfp="C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\xc8"  -c -x c -funsigned-char -funsigned-bitfields -mext=cci -D__ATmega328P__ -DDEBUG  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+drivers/motor/motor.o: ../drivers/motor/motor.c
 	@echo Building file: $<
 	@echo Invoking: XC8 C Compiler : 2.31
 	$(QUOTE)C:\Program Files\Microchip\xc8\v2.31\bin\xc8-cc.exe$(QUOTE)  -mcpu=ATmega328P  -mdfp="C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\xc8"  -c -x c -funsigned-char -funsigned-bitfields -mext=cci -D__ATmega328P__ -DDEBUG  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

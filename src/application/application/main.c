@@ -16,20 +16,18 @@
 
 #include "drivers/usart/usart.h"
 #include "drivers/encoder/encoder.h"
-#include "drivers/pwm/pwm.h"
+#include "drivers/motor/motor.h"
 
 int main(void)
 {
 	usart_init(UBRR);
 	encoder_init();
-	pwm_init();
+	motor_init();
 	
 	printf("Starting application\n\r");
 	
 	//DDRB = (1<<BUILTIN_LED); //PB7 is digital pin 13 (LED), set as output
 	//PORTB = (1<<BUILTIN_LED); //Set PB7 high to turn on LED
-	
-	pwm_set_duty_cycle_right(100);
 	
 	while(1)
 	{
@@ -43,15 +41,10 @@ int main(void)
 		int ticksL = encoder_get_accumulated_ticks_left();
 		int ticksR = encoder_get_accumulated_ticks_right();
 		printf("L = %d; R = %d\n\r", ticksL, ticksR);*/
-		for (int d=0; d<=100; d++) {
-			pwm_set_duty_cycle_left(d);
-			_delay_ms(100);
-		}
-		for (int d=100; d>=0; d--) {
-			pwm_set_duty_cycle_left(d);
-			_delay_ms(100);
-		}
-		
+		motor_left(100);
+		_delay_ms(2000);
+		motor_left(-60);
+		_delay_ms(2000);
 		
 		
 	}

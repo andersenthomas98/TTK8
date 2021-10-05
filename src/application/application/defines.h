@@ -40,4 +40,13 @@
 
 /**********************/
 
+/******** L298N control pins ********/
+#define OUT1 PORTC0 // (Arduino Uno pin A0)
+#define OUT2 PORTC1 // (Arduino Uno pin A1)
+#define OUT3 PORTC2 // (A2)
+#define OUT4 PORTC4 // (A3)
+ 
+
+/************************************/
+
 #endif /* DEFINES_H_ */
