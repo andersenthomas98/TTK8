@@ -11,8 +11,8 @@
 #include "../../defines.h"
 #include "encoder.h"
 
-int encoder_ticks_left = 0;
-int encoder_ticks_right = 0;
+volatile int encoder_ticks_left = 0;
+volatile int encoder_ticks_right = 0;
 
 void encoder_init(void) {
 	

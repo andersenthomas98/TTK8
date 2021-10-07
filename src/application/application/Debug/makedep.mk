@@ -8,6 +8,8 @@ drivers\motor\motor.c
 
 drivers\pwm\pwm.c
 
+drivers\timer\timer.c
+
 drivers\usart\usart.c
 
 main.c

@@ -5,24 +5,24 @@
  *  Author: thoander
  */ 
 
-#define F_CPU 16000000UL
+#include "defines.h"
 
 #include <xc.h>
 #include <avr/io.h>
 #include <stdio.h>
 #include <util/delay.h>
 
-#include "defines.h"
-
 #include "drivers/usart/usart.h"
 #include "drivers/encoder/encoder.h"
 #include "drivers/motor/motor.h"
+#include "drivers/timer/timer.h"
 
 int main(void)
 {
 	usart_init(UBRR);
-	encoder_init();
-	motor_init();
+	//encoder_init();
+	//motor_init();
+	timer_init();
 	
 	printf("Starting application\n\r");
 	
@@ -41,11 +41,12 @@ int main(void)
 		int ticksL = encoder_get_accumulated_ticks_left();
 		int ticksR = encoder_get_accumulated_ticks_right();
 		printf("L = %d; R = %d\n\r", ticksL, ticksR);*/
-		motor_left(100);
-		_delay_ms(2000);
-		motor_left(-60);
-		_delay_ms(2000);
+		//motor_left(100);
+		//_delay_ms(2000);
+		//motor_left(-60);
+		//_delay_ms(2000);
 		
-		
+		unsigned long t1 = timer_get_elapsed_ms();
+		printf("%lu\n\r", t1);
 	}
 }

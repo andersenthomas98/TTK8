@@ -11,6 +11,8 @@
 
 #include <avr/io.h>
 
+#define F_CPU 16000000UL
+
 #define BUILTIN_LED PORTB5 // (Arduino Uno pin 13)
 
 /*
