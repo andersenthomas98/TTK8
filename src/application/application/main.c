@@ -15,14 +15,16 @@
 #include "drivers/usart/usart.h"
 #include "drivers/encoder/encoder.h"
 #include "drivers/motor/motor.h"
-#include "drivers/timer/timer.h"
+//#include "drivers/timer/timer.h"
+#include "drivers/speed_estimator/speed_estimator.h"
 
 int main(void)
 {
 	usart_init(UBRR);
+	motor_init();
+	//timer_init();
+	speed_estimator_init();
 	//encoder_init();
-	//motor_init();
-	timer_init();
 	
 	printf("Starting application\n\r");
 	
@@ -46,7 +48,9 @@ int main(void)
 		//motor_left(-60);
 		//_delay_ms(2000);
 		
-		unsigned long t1 = timer_get_elapsed_ms();
-		printf("%lu\n\r", t1);
+		float l = speed_estimator_left_rad_per_s();
+		//int enc = encoder_get_accumulated_ticks_left();
+		//_delay_ms(500);
+		printf("%f\n\r", l);
 	}
 }

@@ -12,6 +12,7 @@ drivers/encoder/encoder.d drivers/encoder/encoder.o: \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\fuse.h \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\lock.h \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\interrupt.h \
+ c:\program\ files\microchip\xc8\v2.31\avr\avr\include\util\atomic.h \
  ../drivers/encoder/../../defines.h ../drivers/encoder/encoder.h
 
 c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\io.h:
@@ -37,6 +38,8 @@ c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\fuse.h:
 c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\lock.h:
 
 c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\interrupt.h:
+
+c:\program\ files\microchip\xc8\v2.31\avr\avr\include\util\atomic.h:
 
 ../drivers/encoder/../../defines.h:
 

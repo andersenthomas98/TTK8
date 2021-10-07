@@ -11,11 +11,13 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-//#include <util/atomic.h>
+#include <util/atomic.h>
 
-volatile unsigned long elapsed_ms = 0;
+static volatile unsigned long elapsed_ms = 0;
 
 void timer_init(void) {
+	
+	cli();
 	
 	// 0x3E7F (hex) = 15999 (base10)
 	// High bytes have to be written before low bytes
@@ -32,10 +34,14 @@ void timer_init(void) {
 }
 
 unsigned long timer_get_elapsed_ms(void) {
-	return elapsed_ms;
+	unsigned long ms;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		ms = elapsed_ms;
+	}
+	return ms;
 }
-
+/*
 ISR(TIMER1_COMPA_vect) {
 	++elapsed_ms;
-}
+}*/
 

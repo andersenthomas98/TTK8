@@ -36,6 +36,7 @@ SUBDIRS :=  \
 ../drivers \
 ../drivers/encoder \
 ../drivers/motor \
+../drivers/speed_estimator \
 ../drivers/timer \
 ../drivers/pwm \
 ../drivers/usart
@@ -46,6 +47,7 @@ C_SRCS +=  \
 ../drivers/encoder/encoder.c \
 ../drivers/motor/motor.c \
 ../drivers/pwm/pwm.c \
+../drivers/speed_estimator/speed_estimator.c \
 ../drivers/timer/timer.c \
 ../drivers/usart/usart.c \
 ../main.c
@@ -61,6 +63,7 @@ OBJS +=  \
 drivers/encoder/encoder.o \
 drivers/motor/motor.o \
 drivers/pwm/pwm.o \
+drivers/speed_estimator/speed_estimator.o \
 drivers/timer/timer.o \
 drivers/usart/usart.o \
 main.o
@@ -69,6 +72,7 @@ OBJS_AS_ARGS +=  \
 drivers/encoder/encoder.o \
 drivers/motor/motor.o \
 drivers/pwm/pwm.o \
+drivers/speed_estimator/speed_estimator.o \
 drivers/timer/timer.o \
 drivers/usart/usart.o \
 main.o
@@ -77,6 +81,7 @@ C_DEPS +=  \
 drivers/encoder/encoder.d \
 drivers/motor/motor.d \
 drivers/pwm/pwm.d \
+drivers/speed_estimator/speed_estimator.d \
 drivers/timer/timer.d \
 drivers/usart/usart.d \
 main.d
@@ -85,6 +90,7 @@ C_DEPS_AS_ARGS +=  \
 drivers/encoder/encoder.d \
 drivers/motor/motor.d \
 drivers/pwm/pwm.d \
+drivers/speed_estimator/speed_estimator.d \
 drivers/timer/timer.d \
 drivers/usart/usart.d \
 main.d
@@ -118,6 +124,13 @@ drivers/motor/motor.o: ../drivers/motor/motor.c
 	
 
 drivers/pwm/pwm.o: ../drivers/pwm/pwm.c
+	@echo Building file: $<
+	@echo Invoking: XC8 C Compiler : 2.31
+	$(QUOTE)C:\Program Files\Microchip\xc8\v2.31\bin\xc8-cc.exe$(QUOTE)  -mcpu=ATmega328P  -mdfp="C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\xc8"  -c -x c -funsigned-char -funsigned-bitfields -mext=cci -D__ATmega328P__ -DDEBUG  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+drivers/speed_estimator/speed_estimator.o: ../drivers/speed_estimator/speed_estimator.c
 	@echo Building file: $<
 	@echo Invoking: XC8 C Compiler : 2.31
 	$(QUOTE)C:\Program Files\Microchip\xc8\v2.31\bin\xc8-cc.exe$(QUOTE)  -mcpu=ATmega328P  -mdfp="C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\xc8"  -c -x c -funsigned-char -funsigned-bitfields -mext=cci -D__ATmega328P__ -DDEBUG  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
@@ -171,7 +184,7 @@ all: $(OUTPUT_FILE_PATH) $(ADDITIONAL_DEPENDENCIES)
 $(OUTPUT_FILE_PATH): $(OBJS) $(USER_OBJS) $(OUTPUT_FILE_DEP) $(LIB_DEP) $(LINKER_SCRIPT_DEP)
 	@echo Building target: $@
 	@echo Invoking:  XC8 C Linker : 2.31
-	$(QUOTE)C:\Program Files\Microchip\xc8\v2.31\bin\xc8-cc.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -mcpu=ATmega328P  -mdfp="C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\xc8"  -Wl,-Map="application.map" -funsigned-char -funsigned-bitfields -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums --memorysummary,memoryfile.xml  
+	$(QUOTE)C:\Program Files\Microchip\xc8\v2.31\bin\xc8-cc.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -mcpu=ATmega328P  -mdfp="C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\xc8"  -Wl,-Map="application.map" -Wl,-u,vfprintf -funsigned-char -funsigned-bitfields -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums --memorysummary,memoryfile.xml -lprintf_flt  
 	@echo Finished building target: $@
 	"C:\Program Files\Microchip\xc8\v2.31\bin\avr-objcopy.exe" -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "application.elf" "application.hex"
 	"C:\Program Files\Microchip\xc8\v2.31\bin\avr-objcopy.exe" -j .eeprom --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0 --no-change-warnings -O ihex "application.elf" "application.eep" || exit 0

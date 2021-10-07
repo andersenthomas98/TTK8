@@ -57,4 +57,7 @@
 
 /************************************/
 
+#define TICKS_PER_ROT 850
+#define PI 3.14159265359
+
 #endif /* DEFINES_H_ */

@@ -7,14 +7,17 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <util/atomic.h>
 
 #include "../../defines.h"
 #include "encoder.h"
 
-volatile int encoder_ticks_left = 0;
-volatile int encoder_ticks_right = 0;
+static volatile int encoder_ticks_left = 0;
+static volatile int encoder_ticks_right = 0;
 
 void encoder_init(void) {
+	
+	cli();
 	
 	// Set digital inputs with internal pull-up (unsure if internal pull-up should be used)
 	DDRD &= ~(1 << ENCA1);
@@ -41,12 +44,22 @@ int encoder_read_tick(int encoder_pin) {
 }
 
 int encoder_get_accumulated_ticks_left(void) {
-	return encoder_ticks_left;
+	int ticks;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		ticks = encoder_ticks_left;
+	}
+	return ticks;
 }
 
 int encoder_get_accumulated_ticks_right(void) {
-	return encoder_ticks_right;
+	int ticks;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		ticks = encoder_ticks_right;
+	}
+	return ticks;
 }
+
+
 
 // Interrupt service routine for INT0
 // Triggered on rising edge of channel A encoder signal for left wheel
