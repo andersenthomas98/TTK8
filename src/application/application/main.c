@@ -30,7 +30,7 @@ int main(void)
 	
 	//DDRB = (1<<BUILTIN_LED); //PB7 is digital pin 13 (LED), set as output
 	//PORTB = (1<<BUILTIN_LED); //Set PB7 high to turn on LED
-	
+	motor_left(100);
 	while(1)
 	{
 		/*
@@ -50,7 +50,6 @@ int main(void)
 		
 		float l = speed_estimator_left_rad_per_s();
 		//int enc = encoder_get_accumulated_ticks_left();
-		//_delay_ms(500);
-		printf("%f\n\r", l);
+		//printf("%f\n\r", l);
 	}
 }

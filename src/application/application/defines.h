@@ -57,6 +57,8 @@
 
 /************************************/
 
+#define LOW_PASS_WEIGHT 1.0
+
 #define TICKS_PER_ROT 850
 #define PI 3.14159265359
 
