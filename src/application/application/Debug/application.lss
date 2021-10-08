@@ -3566,8 +3566,8 @@ Disassembly of section .text.avrlibc:
  a16:	30 91 0d 01 	lds	r19, 0x010D	; 0x80010d <__malloc_heap_start+0x1>
  a1a:	30 93 07 01 	sts	0x0107, r19	; 0x800107 <__brkval+0x1>
  a1e:	20 93 06 01 	sts	0x0106, r18	; 0x800106 <__brkval>
- a22:	20 91 0a 01 	lds	r18, 0x010A	; 0x80010a <_end>
- a26:	30 91 0b 01 	lds	r19, 0x010B	; 0x80010b <_end+0x1>
+ a22:	20 91 0a 01 	lds	r18, 0x010A	; 0x80010a <__malloc_heap_end>
+ a26:	30 91 0b 01 	lds	r19, 0x010B	; 0x80010b <__malloc_heap_end+0x1>
  a2a:	21 15       	cp	r18, r1
  a2c:	31 05       	cpc	r19, r1
  a2e:	41 f4       	brne	.+16     	; 0xa40 <malloc+0xea>
