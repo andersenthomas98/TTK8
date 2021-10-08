@@ -13,9 +13,9 @@ void encoder_init(void);
 
 int encoder_read_tick(int encoder_pin);
 
-int encoder_get_accumulated_ticks_left(void);
+long encoder_get_accumulated_ticks_left(void);
 
-int encoder_get_accumulated_ticks_right(void);
+long encoder_get_accumulated_ticks_right(void);
 
 
 #endif /* ENCODER_H_ */

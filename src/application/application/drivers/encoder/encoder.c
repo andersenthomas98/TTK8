@@ -12,8 +12,8 @@
 #include "../../defines.h"
 #include "encoder.h"
 
-static volatile int encoder_ticks_left = 0;
-static volatile int encoder_ticks_right = 0;
+static volatile long encoder_ticks_left = 0;
+static volatile long encoder_ticks_right = 0;
 
 void encoder_init(void) {
 	
@@ -43,16 +43,16 @@ int encoder_read_tick(int encoder_pin) {
 	return 0;
 }
 
-int encoder_get_accumulated_ticks_left(void) {
-	int ticks;
+long encoder_get_accumulated_ticks_left(void) {
+	long ticks;
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
 		ticks = encoder_ticks_left;
 	}
 	return ticks;
 }
 
-int encoder_get_accumulated_ticks_right(void) {
-	int ticks;
+long encoder_get_accumulated_ticks_right(void) {
+	long ticks;
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
 		ticks = encoder_ticks_right;
 	}
