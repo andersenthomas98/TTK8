@@ -19,10 +19,12 @@ int ticks_right = 0;
 int ticks_left = 0;
 int prev_ticks_right = 0;
 int prev_ticks_left = 0;
+float rad_per_s_left = 0;
+float rad_per_s_right = 0;
 
 
 // Should be updated if timer is adjusted!
-const float encoder_measurement_period = 0.01; //0.05;
+const float encoder_measurement_period = 0.02;//0.01; //0.05;
 
 void speed_estimator_init(void) {
 	
@@ -57,8 +59,8 @@ void speed_estimator_init(void) {
 	*/
 	
 	// 16-bit Timer1
-	OCR1AH = 0x02;
-	OCR1AL = 0x71;
+	OCR1AH = 0x04;
+	OCR1AL = 0xE1;
 	//OCR1A = 15999;
 	TCCR1B |= (1 << WGM12) | (1 << CS12); // CTC mode (clear on match with OCR1A), 256 prescalar
 	
@@ -69,14 +71,10 @@ void speed_estimator_init(void) {
 }
 
 float speed_estimator_right_rad_per_s() {
-	float ticks;
-	float prev_ticks;
 	float rad_per_s;
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-		ticks = ticks_right;
-		prev_ticks = prev_ticks_right;
+		rad_per_s = rad_per_s_right;
 	}
-	rad_per_s = 2.0*PI*((float)ticks - (float)prev_ticks) / ((float)TICKS_PER_ROT*encoder_measurement_period); 
 	return rad_per_s;
 }
 
@@ -87,8 +85,8 @@ float speed_estimator_left_rad_per_s() {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
 		ticks = ticks_left;
 		prev_ticks = prev_ticks_left;
+		rad_per_s = rad_per_s_left;
 	}
-	rad_per_s = 2.0*PI*((float)ticks - (float)prev_ticks) / ((float)TICKS_PER_ROT*encoder_measurement_period);
 	printf("rad_per_s=%f | ticks=%d | prev_ticks=%d\n\r", rad_per_s, ticks, prev_ticks);
 	return rad_per_s;
 }
@@ -118,9 +116,11 @@ ISR(TIMER2_COMPA_vect) {
 ISR(TIMER1_COMPA_vect) {
 	prev_ticks_right = ticks_right;
 	ticks_right = encoder_get_accumulated_ticks_right();
+	rad_per_s_right = 2.0*PI*((float)ticks_right - (float)prev_ticks_right) / ((float)TICKS_PER_ROT*encoder_measurement_period);
 	
 	prev_ticks_left = ticks_left;
 	ticks_left = encoder_get_accumulated_ticks_left();
+	rad_per_s_left = 2.0*PI*((float)ticks_left - (float)prev_ticks_left) / ((float)TICKS_PER_ROT*encoder_measurement_period);
 	//printf("ISR: %d | %d\n\r", ticks_left, prev_ticks_left);
 }
 
