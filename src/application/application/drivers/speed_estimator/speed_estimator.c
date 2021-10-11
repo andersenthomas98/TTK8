@@ -79,15 +79,10 @@ float speed_estimator_right_rad_per_s() {
 }
 
 float speed_estimator_left_rad_per_s() {
-	int ticks;
-	int prev_ticks;
 	float rad_per_s;
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-		ticks = ticks_left;
-		prev_ticks = prev_ticks_left;
 		rad_per_s = rad_per_s_left;
 	}
-	printf("rad_per_s=%f | ticks=%d | prev_ticks=%d\n\r", rad_per_s, ticks, prev_ticks);
 	return rad_per_s;
 }
 
