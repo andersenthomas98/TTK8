@@ -35,11 +35,39 @@ void PID_controller_init(PID_controller *pid) {
 	pid->reference = 0.0;
 	pid->prev_reference = 0.0;
 	pid->error = 0.0;
-	pid->integral_error = 0.0; 
+	pid->prev_error = 0.0;
+	pid->integral_error = 0.0;
+	pid->max_control_action = 100;
+	pid->min_control_action = -100; 
 	
 }
 
-float PID_controller_get_control_action(PID_controller *pid) {
-	float u = 0.0;
-	return u;
+
+float PID_controller_get_control_action(PID_controller *pid, float error) {
+	
+	// integrate error
+	pid->integral_error += error*pid->loop_period;
+	
+	// compute control action u
+	float u;
+	float prop = pid->Kp*error;
+	float integral = pid->Ki*pid->integral_error*pid->loop_period;
+	float der = pid->Kd*(error - pid->prev_error) / pid->loop_period;
+	u = prop + integral + der;
+	
+	// TODO: anti-integral wind-up scheme
+	
+	// limit output
+	float u_limited = u;
+	if (u > pid->max_control_action) {
+		u_limited = pid->max_control_action;
+	} else if (u < pid->min_control_action) {
+		u_limited = pid->min_control_action;
+	}
+	
+	// update parameters
+	pid->prev_error = error;
+	pid->prev_reference = pid->reference;
+	
+	return u_limited;
 }

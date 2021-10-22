@@ -13,11 +13,14 @@ typedef struct {
 	float reference;
 	float prev_reference;
 	float error;
+	float prev_error;
 	float integral_error;
 	float Kp;
 	float Ki;
 	float Kd;
 	float loop_period;
+	float max_control_action = 100;
+	float min_control_action = -100;
 }PID_controller;
 
 
