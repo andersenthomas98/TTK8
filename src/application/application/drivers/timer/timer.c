@@ -19,6 +19,19 @@ void timer_init(void) {
 	
 	cli();
 	
+	// Use 8-bit timer 2 for keeping-time
+	TCCR2B = 0x00;
+	TCNT2 = 0x00;
+	OCR2A = 0xF9;
+	TCCR2A |= (1 << WGM21) | (1 << CS22); // CTC (Clear timer on compare match with OCR2A), 64 as prescaler
+	TCCR2B |= (1 << CS22);
+	
+	
+	// Enable interrupt
+	TIMSK2 |= (1 << OCIE2A);
+	
+	
+	/*
 	// 0x3E7F (hex) = 15999 (base10)
 	// High bytes have to be written before low bytes
 	OCR1AH = 0x3E;
@@ -28,7 +41,8 @@ void timer_init(void) {
 	
 	// Enable interrupt
 	TIMSK1 |= (1 << OCIE1A);
-	//SREG |= (1 << 7);
+	//SREG |= (1 << 7);*/
+	
 	sei();
 	
 }
@@ -40,8 +54,8 @@ unsigned long timer_get_elapsed_ms(void) {
 	}
 	return ms;
 }
-/*
-ISR(TIMER1_COMPA_vect) {
+
+ISR(TIMER2_COMPA_vect) {
 	++elapsed_ms;
-}*/
+}
 
