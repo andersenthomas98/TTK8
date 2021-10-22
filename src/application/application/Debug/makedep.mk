@@ -8,7 +8,7 @@ drivers\motor\motor.c
 
 drivers\pwm\pwm.c
 
-drivers\speed_controller\speed_controller.c
+drivers\PID_controller\PID_controller.c
 
 drivers\speed_estimator\speed_estimator.c
 

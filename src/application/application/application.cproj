@@ -134,10 +134,10 @@
     <Compile Include="drivers\pwm\pwm.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="drivers\speed_controller\speed_controller.c">
+    <Compile Include="drivers\PID_controller\PID_controller.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="drivers\speed_controller\speed_controller.h">
+    <Compile Include="drivers\PID_controller\PID_controller.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="drivers\speed_estimator\speed_estimator.c">
@@ -166,7 +166,7 @@
     <Folder Include="drivers" />
     <Folder Include="drivers\encoder" />
     <Folder Include="drivers\motor" />
-    <Folder Include="drivers\speed_controller" />
+    <Folder Include="drivers\PID_controller" />
     <Folder Include="drivers\speed_estimator" />
     <Folder Include="drivers\timer" />
     <Folder Include="drivers\pwm" />
