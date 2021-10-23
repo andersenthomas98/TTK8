@@ -14,9 +14,13 @@
 // CTC mode
 
 
-void timer_init(void);
+void timer_init(unsigned int timeout_ms);
 
 unsigned long timer_get_elapsed_ms(void);
+
+void timer_reset(void);
+
+unsigned int timer_timeout(void);
 
 
 #endif /* TIMER_H_ */
