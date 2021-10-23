@@ -22,26 +22,36 @@
 int main(void)
 {
 	usart_init(UBRR);
+	speed_estimator_init();
 	//motor_init();
-	timer_init(2000);
-	//speed_estimator_init();
+
 	//encoder_init();
 	
-	printf("Starting application\n\r");
+	timer_init(50); // Set control loop period to 50 ms (Obs: Should check if code takes longer time to run!)
 	
-	//DDRB = (1<<BUILTIN_LED); //PB7 is digital pin 13 (LED), set as output
-	//PORTB = (1<<BUILTIN_LED); //Set PB7 high to turn on LED
-	//motor_left(100);
+	printf("Starting application\n\r");
 	
 	
 	PID_controller left_motor;
 	PID_controller_init(&left_motor);
-	PID_controller_set_parameters(&left_motor, 22.0, 123.0, 1.23, 0.02);
+	PID_controller_set_parameters(&left_motor, 10.0, 0.0, 0.0, 0.05);
+	
+	
+	float left_error_rps; // left wheel error [rad/s]
+	float left_speed_rps; // left wheel speed [rad/s]
+	float left_speed_ref_rps = DEG2RAD*90; // left wheel reference speed [rad/s]
+	
+	float right_error_rps; // right wheel error [rad/s]
 	
 	while(1)
 	{
+		// wheel speed control loop
 		if (timer_timeout()) {
 			timer_reset();
+			
+			left_speed_rps = speed_estimator_left_rad_per_s();
+			printf("%f\n\r", left_speed_rps);
+			
 			
 			
 			
