@@ -51,7 +51,7 @@ float PID_controller_get_control_action(PID_controller *pid, float error) {
 	// compute control action u
 	float u;
 	float prop = pid->Kp*error;
-	float integral = pid->Ki*pid->integral_error*pid->loop_period;
+	float integral = pid->Ki*pid->integral_error;
 	float der = pid->Kd*(error - pid->prev_error) / pid->loop_period;
 	u = prop + integral + der;
 	
@@ -61,6 +61,7 @@ float PID_controller_get_control_action(PID_controller *pid, float error) {
 	float u_limited = u;
 	if (u > pid->max_control_action) {
 		u_limited = pid->max_control_action;
+		
 	} else if (u < pid->min_control_action) {
 		u_limited = pid->min_control_action;
 	}
