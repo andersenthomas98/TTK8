@@ -15,22 +15,35 @@
 #include "drivers/usart/usart.h"
 #include "drivers/encoder/encoder.h"
 #include "drivers/motor/motor.h"
-//#include "drivers/timer/timer.h"
+#include "drivers/timer/timer.h"
 #include "drivers/speed_estimator/speed_estimator.h"
+#include "drivers/PID_controller/PID_controller.h"
 
 int main(void)
 {
 	usart_init(UBRR);
-	motor_init();
-	//timer_init();
-	speed_estimator_init();
+	//motor_init();
+	timer_init();
+	//speed_estimator_init();
 	//encoder_init();
 	
 	printf("Starting application\n\r");
 	
 	//DDRB = (1<<BUILTIN_LED); //PB7 is digital pin 13 (LED), set as output
 	//PORTB = (1<<BUILTIN_LED); //Set PB7 high to turn on LED
-	motor_left(100);
+	//motor_left(100);
+	
+	
+	PID_controller left_motor;
+	PID_controller_init(&left_motor);
+	PID_controller_set_parameters(&left_motor, 22.0, 123.0, 1.23, 0.02);
+	
+	printf("kp: %f\n\r", left_motor.Kp);
+	
+	PID_controller_set_parameters(&left_motor, 99.0, 123.0, 1.23, 0.02);
+	
+	printf("kp: %f\n\r", left_motor.Kp);
+	
 	while(1)
 	{
 		/*
@@ -48,8 +61,8 @@ int main(void)
 		//motor_left(-60);
 		//_delay_ms(2000);
 		
-		float l = speed_estimator_left_rad_per_s();
-		//int enc = encoder_get_accumulated_ticks_left();
-		//printf("%f\n\r", l);
+		//unsigned long t = timer_get_elapsed_ms();
+		//printf("%lu\n\r", t);
+		_delay_ms(500);
 	}
 }

@@ -19,8 +19,9 @@ main.d main.o: .././main.c .././defines.h \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\util\delay_basic.h \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\math.h \
  .././drivers/usart/usart.h .././drivers/encoder/encoder.h \
- .././drivers/motor/motor.h \
- .././drivers/speed_estimator/speed_estimator.h
+ .././drivers/motor/motor.h .././drivers/timer/timer.h \
+ .././drivers/speed_estimator/speed_estimator.h \
+ .././drivers/PID_controller/PID_controller.h
 
 .././defines.h:
 
@@ -68,4 +69,8 @@ c:\program\ files\microchip\xc8\v2.31\avr\avr\include\math.h:
 
 .././drivers/motor/motor.h:
 
+.././drivers/timer/timer.h:
+
 .././drivers/speed_estimator/speed_estimator.h:
+
+.././drivers/PID_controller/PID_controller.h:

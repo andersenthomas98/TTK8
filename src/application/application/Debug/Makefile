@@ -36,6 +36,7 @@ SUBDIRS :=  \
 ../drivers \
 ../drivers/encoder \
 ../drivers/motor \
+../drivers/PID_controller \
 ../drivers/speed_estimator \
 ../drivers/timer \
 ../drivers/pwm \
@@ -47,6 +48,7 @@ C_SRCS +=  \
 ../drivers/encoder/encoder.c \
 ../drivers/motor/motor.c \
 ../drivers/pwm/pwm.c \
+../drivers/PID_controller/PID_controller.c \
 ../drivers/speed_estimator/speed_estimator.c \
 ../drivers/timer/timer.c \
 ../drivers/usart/usart.c \
@@ -63,6 +65,7 @@ OBJS +=  \
 drivers/encoder/encoder.o \
 drivers/motor/motor.o \
 drivers/pwm/pwm.o \
+drivers/PID_controller/PID_controller.o \
 drivers/speed_estimator/speed_estimator.o \
 drivers/timer/timer.o \
 drivers/usart/usart.o \
@@ -72,6 +75,7 @@ OBJS_AS_ARGS +=  \
 drivers/encoder/encoder.o \
 drivers/motor/motor.o \
 drivers/pwm/pwm.o \
+drivers/PID_controller/PID_controller.o \
 drivers/speed_estimator/speed_estimator.o \
 drivers/timer/timer.o \
 drivers/usart/usart.o \
@@ -81,6 +85,7 @@ C_DEPS +=  \
 drivers/encoder/encoder.d \
 drivers/motor/motor.d \
 drivers/pwm/pwm.d \
+drivers/PID_controller/PID_controller.d \
 drivers/speed_estimator/speed_estimator.d \
 drivers/timer/timer.d \
 drivers/usart/usart.d \
@@ -90,6 +95,7 @@ C_DEPS_AS_ARGS +=  \
 drivers/encoder/encoder.d \
 drivers/motor/motor.d \
 drivers/pwm/pwm.d \
+drivers/PID_controller/PID_controller.d \
 drivers/speed_estimator/speed_estimator.d \
 drivers/timer/timer.d \
 drivers/usart/usart.d \
@@ -124,6 +130,13 @@ drivers/motor/motor.o: ../drivers/motor/motor.c
 	
 
 drivers/pwm/pwm.o: ../drivers/pwm/pwm.c
+	@echo Building file: $<
+	@echo Invoking: XC8 C Compiler : 2.31
+	$(QUOTE)C:\Program Files\Microchip\xc8\v2.31\bin\xc8-cc.exe$(QUOTE)  -mcpu=ATmega328P  -mdfp="C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\xc8"  -c -x c -funsigned-char -funsigned-bitfields -mext=cci -D__ATmega328P__ -DDEBUG  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+drivers/PID_controller/PID_controller.o: ../drivers/PID_controller/PID_controller.c
 	@echo Building file: $<
 	@echo Invoking: XC8 C Compiler : 2.31
 	$(QUOTE)C:\Program Files\Microchip\xc8\v2.31\bin\xc8-cc.exe$(QUOTE)  -mcpu=ATmega328P  -mdfp="C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\xc8"  -c -x c -funsigned-char -funsigned-bitfields -mext=cci -D__ATmega328P__ -DDEBUG  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
