@@ -23,7 +23,7 @@ int main(void)
 {
 	usart_init(UBRR);
 	speed_estimator_init();
-	//motor_init();
+	motor_init();
 
 	//encoder_init();
 	
@@ -34,12 +34,13 @@ int main(void)
 	
 	PID_controller left_motor;
 	PID_controller_init(&left_motor);
-	PID_controller_set_parameters(&left_motor, 10.0, 0.0, 0.0, 0.05);
+	PID_controller_set_parameters(&left_motor, 10.0, 10.0, 0.0, 0.05);
 	
 	
 	float left_error_rps; // left wheel error [rad/s]
 	float left_speed_rps; // left wheel speed [rad/s]
-	float left_speed_ref_rps = DEG2RAD*90; // left wheel reference speed [rad/s]
+	float left_speed_ref_rps = DEG2RAD*360; // left wheel reference speed [rad/s]
+	float left_u; // left wheel speed control action
 	
 	float right_error_rps; // right wheel error [rad/s]
 	
@@ -50,6 +51,10 @@ int main(void)
 			timer_reset();
 			
 			left_speed_rps = speed_estimator_left_rad_per_s();
+			left_error_rps = left_speed_ref_rps - left_speed_rps;
+			left_u = PID_controller_get_control_action(&left_motor, left_error_rps);
+			motor_left(left_u);
+			
 			printf("%f\n\r", left_speed_rps);
 			
 			

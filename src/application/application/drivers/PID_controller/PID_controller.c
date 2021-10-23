@@ -5,9 +5,12 @@
  *  Author: thoander
  */ 
 
+#include <util/atomic.h>
+
 #include "PID_controller.h"
 #include "../speed_estimator/speed_estimator.h"
 #include "../timer/timer.h"
+#include "../misc/misc.h"
 
 float reference_speed = 0.0;
 float Kp = 0.0;
@@ -21,10 +24,12 @@ void PID_controller_set_reference(PID_controller *pid, float ref) {
 }
 
 void PID_controller_set_parameters(PID_controller *pid, float P, float I, float D, float loop_period) {
-	pid->Kp = P;
-	pid->Ki = I;
-	pid->Kd = D;
-	pid->loop_period = loop_period;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		pid->Kp = P;
+		pid->Ki = I;
+		pid->Kd = D;
+		pid->loop_period = loop_period;
+	}
 }
 
 void PID_controller_init(PID_controller *pid) {
@@ -44,6 +49,11 @@ void PID_controller_init(PID_controller *pid) {
 
 
 float PID_controller_get_control_action(PID_controller *pid, float error) {
+	
+	/*if (abs(error) < 0.1) {
+		pid->integral_error = 0; 
+		error = 0;
+	}*/
 	
 	// integrate error
 	pid->integral_error += error*pid->loop_period;
