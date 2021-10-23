@@ -19,8 +19,8 @@ typedef struct {
 	float Ki;
 	float Kd;
 	float loop_period;
-	float max_control_action = 100;
-	float min_control_action = -100;
+	float max_control_action;
+	float min_control_action;
 }PID_controller;
 
 
@@ -30,7 +30,7 @@ void PID_controller_set_reference(PID_controller *pid, float ref);
 
 void PID_controller_set_parameters(PID_controller *pid, float P, float I, float D, float loop_period);
 
-float PID_controller_get_control_action(PID_controller *pid);
+float PID_controller_get_control_action(PID_controller *pid, float error);
 
 
 #endif /* SPEED_CONTROLLER_H_ */
