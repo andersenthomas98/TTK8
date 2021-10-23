@@ -55,15 +55,15 @@ float PID_controller_get_control_action(PID_controller *pid, float error) {
 	float der = pid->Kd*(error - pid->prev_error) / pid->loop_period;
 	u = prop + integral + der;
 	
-	// TODO: anti-integral wind-up scheme
-	
 	// limit output
 	float u_limited = u;
 	if (u > pid->max_control_action) {
 		u_limited = pid->max_control_action;
+		pid->integral_error -= (pid->loop_period / pid->Ki) * (u_limited - u); // anti-windup (Beard & McLain)
 		
 	} else if (u < pid->min_control_action) {
 		u_limited = pid->min_control_action;
+		pid->integral_error -= (pid->loop_period / pid->Ki) * (u_limited - u); // anti-windup (Beard & McLain)
 	}
 	
 	// update parameters
