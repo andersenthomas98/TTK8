@@ -14,10 +14,15 @@
 #include <util/atomic.h>
 
 static volatile unsigned long elapsed_ms = 0;
+static volatile unsigned int timer_flag = 0;
+unsigned int timeout_ms;
 
-void timer_init(void) {
+void timer_init(unsigned int timeout) {
 	
 	cli();
+	
+	timer_flag = 0;
+	timeout_ms = timeout;
 	
 	// Use 8-bit timer 2 for keeping-time
 	TCCR2B = 0x00;
@@ -55,7 +60,26 @@ unsigned long timer_get_elapsed_ms(void) {
 	return ms;
 }
 
+void timer_reset(void) {
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		elapsed_ms = 0;
+		TCNT2 = 0x00;
+		timer_flag = 0;
+	}
+}
+
+unsigned int timer_timeout(void) {
+	unsigned int flag;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		flag = timer_flag;
+	}
+	return flag;
+}
+
 ISR(TIMER2_COMPA_vect) {
 	++elapsed_ms;
+	if (elapsed_ms >= timeout_ms) {
+		timer_flag = 1;
+	}
 }
 

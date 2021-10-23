@@ -23,7 +23,7 @@ int main(void)
 {
 	usart_init(UBRR);
 	//motor_init();
-	timer_init();
+	timer_init(2000);
 	//speed_estimator_init();
 	//encoder_init();
 	
@@ -38,14 +38,14 @@ int main(void)
 	PID_controller_init(&left_motor);
 	PID_controller_set_parameters(&left_motor, 22.0, 123.0, 1.23, 0.02);
 	
-	printf("kp: %f\n\r", left_motor.Kp);
-	
-	PID_controller_set_parameters(&left_motor, 99.0, 123.0, 1.23, 0.02);
-	
-	printf("kp: %f\n\r", left_motor.Kp);
-	
 	while(1)
 	{
+		if (timer_timeout()) {
+			timer_reset();
+			
+			
+			
+		}
 		/*
 		_delay_ms(1000);
 		printf("off\n\r");
@@ -63,6 +63,5 @@ int main(void)
 		
 		//unsigned long t = timer_get_elapsed_ms();
 		//printf("%lu\n\r", t);
-		_delay_ms(500);
 	}
 }
