@@ -15,16 +15,16 @@
 #include <stdio.h>
 
 
-int ticks_right = 0;
-int ticks_left = 0;
-int prev_ticks_right = 0;
-int prev_ticks_left = 0;
-float rad_per_s_left = 0;
-float rad_per_s_right = 0;
+static volatile int ticks_right = 0;
+static volatile int ticks_left = 0;
+static volatile int prev_ticks_right = 0;
+static volatile int prev_ticks_left = 0;
+static volatile float rad_per_s_left = 0;
+static volatile float rad_per_s_right = 0;
 
 
 // Should be updated if timer is adjusted!
-const float encoder_measurement_period = 0.02;//0.01; //0.05;
+const float encoder_measurement_period = 0.02;
 
 void speed_estimator_init(void) {
 	
