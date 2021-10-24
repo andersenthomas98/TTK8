@@ -34,16 +34,17 @@ int main(void)
 	
 	PID_controller left_motor;
 	PID_controller_init(&left_motor);
-	PID_controller_set_parameters(&left_motor, 40.0, 0.0, 0.0, 0.05);
+	PID_controller_set_parameters(&left_motor, 10.0, 50.0, 0.0, 0.05);
 	
 	
 	float left_error_rps; // left wheel speed error [rad/s]
 	float left_speed_rps; // left wheel speed [rad/s]
-	float left_speed_ref_rps = DEG2RAD*500; // left wheel reference speed [rad/s]. 9.86 rad/s = 565 deg/s is max speed.
+	float left_speed_ref_rps = DEG2RAD*550; // left wheel reference speed [rad/s]. 9.86 rad/s = 565 deg/s is max speed.
 	float left_u; // left wheel speed control action
 	
 	float right_error_rps; // right wheel error [rad/s]
-	
+	int i = 0;
+	int flag = 0;
 	
 	while(1)
 	{
@@ -55,8 +56,20 @@ int main(void)
 			left_error_rps = left_speed_ref_rps - left_speed_rps;
 			left_u = PID_controller_get_control_action(&left_motor, left_error_rps);
 			motor_left(left_u);
-
-			printf("%f | %f\n\r", left_error_rps, left_u);
+			
+			
+			i++;
+			if (i >=100) {
+				if (!flag) {
+					left_speed_ref_rps = -DEG2RAD*550;
+					flag = 1;
+				} else {
+					left_speed_ref_rps = DEG2RAD*550;
+					flag = 0;
+				}
+				i = 0;
+			}
+			printf("%f | %f\n\r", left_motor.integral_error, left_u);
 			
 			
 		}

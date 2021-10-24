@@ -50,14 +50,6 @@ void PID_controller_init(PID_controller *pid) {
 
 float PID_controller_get_control_action(PID_controller *pid, float error) {
 	
-	/*if (abs(error) < 0.1) {
-		pid->integral_error = 0; 
-		error = 0;
-	}*/
-	
-	// integrate error
-	pid->integral_error += error*pid->loop_period;
-	
 	// compute control action u
 	float u;
 	float prop = pid->Kp*error;
@@ -70,15 +62,18 @@ float PID_controller_get_control_action(PID_controller *pid, float error) {
 	if (u > pid->max_control_action) {
 		u_limited = pid->max_control_action;
 		if (pid->Ki != 0) {
-			pid->integral_error -= (pid->loop_period / pid->Ki) * (u_limited - u); // anti-windup (Beard & McLain)
+			pid->integral_error += (pid->loop_period / pid->Ki) * (u_limited - u); // anti-windup (Beard & McLain)
 		}
 		
 	} else if (u < pid->min_control_action) {
 		u_limited = pid->min_control_action;
 		if (pid->Ki != 0) {
-			pid->integral_error -= (pid->loop_period / pid->Ki) * (u_limited - u); // anti-windup (Beard & McLain)
+			pid->integral_error += (pid->loop_period / pid->Ki) * (u_limited - u); // anti-windup (Beard & McLain)
 		}
 	}
+	
+	// integrate error
+	pid->integral_error += error*pid->loop_period;
 	
 	// update parameters
 	pid->prev_error = error;
