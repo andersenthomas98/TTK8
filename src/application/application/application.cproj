@@ -122,6 +122,12 @@
     <Compile Include="drivers\encoder\encoder.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\misc\misc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\misc\misc.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\motor\motor.c">
       <SubType>compile</SubType>
     </Compile>
@@ -166,6 +172,7 @@
     <Folder Include="drivers" />
     <Folder Include="drivers\encoder" />
     <Folder Include="drivers\motor" />
+    <Folder Include="drivers\misc" />
     <Folder Include="drivers\PID_controller" />
     <Folder Include="drivers\speed_estimator" />
     <Folder Include="drivers\timer" />

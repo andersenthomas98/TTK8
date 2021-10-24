@@ -5,9 +5,12 @@
  *  Author: thoander
  */ 
 
+#include <util/atomic.h>
+
 #include "PID_controller.h"
 #include "../speed_estimator/speed_estimator.h"
 #include "../timer/timer.h"
+#include "../misc/misc.h"
 
 float reference_speed = 0.0;
 float Kp = 0.0;
@@ -21,10 +24,12 @@ void PID_controller_set_reference(PID_controller *pid, float ref) {
 }
 
 void PID_controller_set_parameters(PID_controller *pid, float P, float I, float D, float loop_period) {
-	pid->Kp = P;
-	pid->Ki = I;
-	pid->Kd = D;
-	pid->loop_period = loop_period;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		pid->Kp = P;
+		pid->Ki = I;
+		pid->Kd = D;
+		pid->loop_period = loop_period;
+	}
 }
 
 void PID_controller_init(PID_controller *pid) {
@@ -45,9 +50,6 @@ void PID_controller_init(PID_controller *pid) {
 
 float PID_controller_get_control_action(PID_controller *pid, float error) {
 	
-	// integrate error
-	pid->integral_error += error*pid->loop_period;
-	
 	// compute control action u
 	float u;
 	float prop = pid->Kp*error;
@@ -59,12 +61,19 @@ float PID_controller_get_control_action(PID_controller *pid, float error) {
 	float u_limited = u;
 	if (u > pid->max_control_action) {
 		u_limited = pid->max_control_action;
-		pid->integral_error -= (pid->loop_period / pid->Ki) * (u_limited - u); // anti-windup (Beard & McLain)
+		if (pid->Ki != 0) {
+			pid->integral_error += (pid->loop_period / pid->Ki) * (u_limited - u); // anti-windup (Beard & McLain)
+		}
 		
 	} else if (u < pid->min_control_action) {
 		u_limited = pid->min_control_action;
-		pid->integral_error -= (pid->loop_period / pid->Ki) * (u_limited - u); // anti-windup (Beard & McLain)
+		if (pid->Ki != 0) {
+			pid->integral_error += (pid->loop_period / pid->Ki) * (u_limited - u); // anti-windup (Beard & McLain)
+		}
 	}
+	
+	// integrate error
+	pid->integral_error += error*pid->loop_period;
 	
 	// update parameters
 	pid->prev_error = error;

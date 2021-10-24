@@ -8,6 +8,7 @@
 #include "motor.h"
 #include "../pwm/pwm.h"
 #include "../../defines.h"
+#include "../misc/misc.h"
 #include <avr/io.h>
 
 void set_left_motor_dir(int dir);
@@ -45,14 +46,6 @@ void set_right_motor_dir(int dir) {
 		PORTC &= ~(1 << OUT3);
 		PORTC |= (1 << OUT4);
 	}
-}
-
-
-float abs(float val) {
-	if (val < 0) {
-		return val*(-1.0);
-	}
-	return val;
 }
 
 void motor_left(float duty) {

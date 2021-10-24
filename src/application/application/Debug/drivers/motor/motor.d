@@ -11,7 +11,8 @@ drivers/motor/motor.d drivers/motor/motor.o: ../drivers/motor/motor.c \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\common.h \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\version.h \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\fuse.h \
- c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\lock.h
+ c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\lock.h \
+ ../drivers/motor/../misc/misc.h
 
 ../drivers/motor/motor.h:
 
@@ -40,3 +41,5 @@ c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\version.h:
 c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\fuse.h:
 
 c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\lock.h:
+
+../drivers/motor/../misc/misc.h:

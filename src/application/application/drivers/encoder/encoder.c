@@ -12,8 +12,8 @@
 #include "../../defines.h"
 #include "encoder.h"
 
-static volatile long encoder_ticks_left = 0;
-static volatile long encoder_ticks_right = 0;
+static volatile long int encoder_ticks_left = 0;
+static volatile long int encoder_ticks_right = 0;
 
 void encoder_init(void) {
 	

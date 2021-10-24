@@ -4,6 +4,8 @@
 
 drivers\encoder\encoder.c
 
+drivers\misc\misc.c
+
 drivers\motor\motor.c
 
 drivers\pwm\pwm.c
