@@ -25,8 +25,11 @@ static volatile float rad_per_s_right = 0;
 
 // Should be updated if timer is adjusted!
 const float encoder_measurement_period = 0.02;
+<<<<<<< HEAD
 long ticks_per_rot_left = DEFAULT_TICKS_PER_ROT_LEFT;
 long ticks_per_rot_right = DEFAULT_TICKS_PER_ROT_LEFT;
+=======
+>>>>>>> e3f03eeac566e5eb3621c9464db86d55188efe51
 
 void speed_estimator_init(long left, long right) {
 	
