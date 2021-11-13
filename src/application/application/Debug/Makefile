@@ -41,7 +41,8 @@ SUBDIRS :=  \
 ../drivers/speed_estimator \
 ../drivers/timer \
 ../drivers/pwm \
-../drivers/usart
+../drivers/usart \
+../encoder-calibration
 
 
 # Add inputs and outputs from these tool invocations to the build variables 

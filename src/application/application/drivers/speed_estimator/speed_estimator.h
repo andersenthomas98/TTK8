@@ -9,7 +9,7 @@
 #ifndef SPEED_ESTIMATOR_H_
 #define SPEED_ESTIMATOR_H_
 
-void speed_estimator_init(void);
+void speed_estimator_init(long ticks_per_rot_left, long ticks_per_rot_right);
 
 float speed_estimator_left_rad_per_s();
 

@@ -25,8 +25,13 @@ static volatile float rad_per_s_right = 0;
 
 // Should be updated if timer is adjusted!
 const float encoder_measurement_period = 0.02;
+long ticks_per_rot_left = DEFAULT_TICKS_PER_ROT_LEFT;
+long ticks_per_rot_right = DEFAULT_TICKS_PER_ROT_LEFT;
 
-void speed_estimator_init(void) {
+void speed_estimator_init(long left, long right) {
+	
+	ticks_per_rot_left = left;
+	ticks_per_rot_right = right;
 	
 	encoder_init();
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
@@ -111,11 +116,11 @@ ISR(TIMER2_COMPA_vect) {
 ISR(TIMER1_COMPA_vect) {
 	prev_ticks_right = ticks_right;
 	ticks_right = encoder_get_accumulated_ticks_right();
-	rad_per_s_right = 2.0*PI*((float)ticks_right - (float)prev_ticks_right) / ((float)TICKS_PER_ROT*encoder_measurement_period);
+	rad_per_s_right = 2.0*PI*((float)ticks_right - (float)prev_ticks_right) / ((float)ticks_per_rot_right*encoder_measurement_period);
 	
 	prev_ticks_left = ticks_left;
 	ticks_left = encoder_get_accumulated_ticks_left();
-	rad_per_s_left = 2.0*PI*((float)ticks_left - (float)prev_ticks_left) / ((float)TICKS_PER_ROT*encoder_measurement_period);
+	rad_per_s_left = 2.0*PI*((float)ticks_left - (float)prev_ticks_left) / ((float)ticks_per_rot_left*encoder_measurement_period);
 	//printf("ISR: %d | %d\n\r", ticks_left, prev_ticks_left);
 }
 
