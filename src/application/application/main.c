@@ -22,11 +22,8 @@
 int main(void)
 {
 	usart_init(UBRR);
-<<<<<<< HEAD
 	speed_estimator_init(850, 850);
-=======
-	speed_estimator_init();
->>>>>>> e3f03eeac566e5eb3621c9464db86d55188efe51
+
 	motor_init();
 
 	//encoder_init();
@@ -43,7 +40,6 @@ int main(void)
 	
 	float left_error_rps; // left wheel speed error [rad/s]
 	float left_speed_rps; // left wheel speed [rad/s]
-<<<<<<< HEAD
 	float left_speed_ref_rps = DEG2RAD*30; // left wheel reference speed [rad/s]. 9.86 rad/s = 565 deg/s is max speed.
 	float left_u; // left wheel speed control action
 	
@@ -52,14 +48,7 @@ int main(void)
 	int i = 0;
 	int flag = 0;
 	
-=======
-	float left_speed_ref_rps = DEG2RAD*550; // left wheel reference speed [rad/s]. 9.86 rad/s = 565 deg/s is max speed.
-	float left_u; // left wheel speed control action
-	
-	float right_error_rps; // right wheel error [rad/s]
-	int i = 0;
-	int flag = 0;
->>>>>>> e3f03eeac566e5eb3621c9464db86d55188efe51
+
 	
 	while(1)
 	{
@@ -72,26 +61,10 @@ int main(void)
 			left_u = PID_controller_get_control_action(&left_motor, left_error_rps);
 			motor_left(left_u);
 			
-<<<<<<< HEAD
 			
 			right_speed_rps = speed_estimator_right_rad_per_s();
 			
 			printf("l: %f\t r: %f\t u: %f\n\r", left_speed_rps, right_speed_rps, left_u);
-=======
-			
-			i++;
-			if (i >=100) {
-				if (!flag) {
-					left_speed_ref_rps = -DEG2RAD*550;
-					flag = 1;
-				} else {
-					left_speed_ref_rps = DEG2RAD*550;
-					flag = 0;
-				}
-				i = 0;
-			}
-			printf("%f | %f\n\r", left_motor.integral_error, left_u);
->>>>>>> e3f03eeac566e5eb3621c9464db86d55188efe51
 			
 			
 		}
