@@ -19,6 +19,7 @@ typedef struct {
 	float Ki;
 	float Kd;
 	float loop_period;
+	float prev_control_action;
 	float max_control_action;
 	float min_control_action;
 }PID_controller;

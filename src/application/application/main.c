@@ -11,6 +11,7 @@
 #include <avr/io.h>
 #include <stdio.h>
 #include <util/delay.h>
+#include <string.h>
 
 #include "drivers/usart/usart.h"
 #include "drivers/encoder/encoder.h"
@@ -26,16 +27,21 @@ int main(void)
 
 	motor_init();
 
-	//encoder_init();
 	
-	timer_init(50); // Set control loop period to 50 ms (Obs: Should check if code takes longer time to run!)
+	float T = 0.02; // Control loop period [s]
+	timer_init(T*1000); 
 	
 	printf("Starting application\n\r");
 	
 	
 	PID_controller left_motor;
+	PID_controller right_motor;
 	PID_controller_init(&left_motor);
-	PID_controller_set_parameters(&left_motor, 10.0, 50.0, 0.0, 0.05);
+	PID_controller_init(&right_motor);
+	//PID_controller_set_parameters(&left_motor, 10.0, 50.0, 0.0, 0.05);
+	//PID_controller_set_parameters(&right_motor, 10.0, 50.0, 0.0, 0.05);
+	PID_controller_set_parameters(&left_motor, 10.0, 50.0, 0.0, T);
+	PID_controller_set_parameters(&right_motor, 10.0, 50.0, 0.0, T);
 	
 	
 	float left_error_rps; // left wheel speed error [rad/s]
@@ -45,10 +51,13 @@ int main(void)
 	
 	float right_error_rps; // right wheel error [rad/s]
 	float right_speed_rps;
+	float right_speed_ref_rps = DEG2RAD*30;
+	float right_u;
 	int i = 0;
 	int flag = 0;
+	unsigned long time=0;
 	
-
+	
 	
 	while(1)
 	{
@@ -63,10 +72,23 @@ int main(void)
 			
 			
 			right_speed_rps = speed_estimator_right_rad_per_s();
+			right_error_rps = right_speed_ref_rps - right_speed_rps;
+			right_u = PID_controller_get_control_action(&right_motor, right_error_rps);
+			motor_right(right_u);
 			
-			printf("l: %f\t r: %f\t u: %f\n\r", left_speed_rps, right_speed_rps, left_u);
+			time = timer_get_elapsed_ms();
 			
-			
+			flag = 1;
+		} 
+		if (flag) {
+			printf("{\"t\":%lu,\"l\":{\"ref\":%.2f,\"y\":%.2f,\"u\":%.2f},\"r\":{\"ref\":%.2f,\"y\":%.2f,\"u\":%.2f}}\n\r", time, left_speed_ref_rps, left_speed_rps, left_u, right_speed_ref_rps, right_speed_rps, right_u);
+			//printf("{\"t\":%lu,\"l\":{\"ref\":%f,\"y\":%f,\"u\":%f}\n", time, left_speed_ref_rps, left_speed_rps, left_u);
+			//printf("{\"t\":%lu ,\"s\":%f}\n", time, left_speed_rps);
+			//send_buffer[i] = {time, left_speed_ref_rps, left_speed_rps, left_u, right_speed_ref_rps, right_speed_rps, right_u};	
+			flag = 0;
 		}
 	}
+	
+	
+	return 0;
 }

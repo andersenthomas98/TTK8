@@ -14,6 +14,7 @@
 #include <util/atomic.h>
 
 static volatile unsigned long elapsed_ms = 0;
+static volatile unsigned long elapsed_ms_since_init = 0;
 static volatile unsigned int timer_flag = 0;
 unsigned int timeout_ms;
 
@@ -55,7 +56,7 @@ void timer_init(unsigned int timeout) {
 unsigned long timer_get_elapsed_ms(void) {
 	unsigned long ms;
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-		ms = elapsed_ms;
+		ms = elapsed_ms_since_init;
 	}
 	return ms;
 }
@@ -77,6 +78,7 @@ unsigned int timer_timeout(void) {
 }
 
 ISR(TIMER2_COMPA_vect) {
+	++elapsed_ms_since_init;
 	++elapsed_ms;
 	if (elapsed_ms >= timeout_ms) {
 		timer_flag = 1;

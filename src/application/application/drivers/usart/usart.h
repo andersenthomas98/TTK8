@@ -10,7 +10,7 @@
 #define USART_H_
 
 #define FOSC 16000000 // clock speed
-#define BAUD 9600
+#define BAUD 76800//38400//19200//9600
 #define UBRR ((FOSC / (BAUD * 16UL)) - 1)
 
 void usart_tx(unsigned char data);

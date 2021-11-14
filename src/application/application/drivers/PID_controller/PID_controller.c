@@ -42,12 +42,13 @@ void PID_controller_init(PID_controller *pid) {
 	pid->error = 0.0;
 	pid->prev_error = 0.0;
 	pid->integral_error = 0.0;
+	pid->prev_control_action = 0.0;
 	pid->max_control_action = 100;
 	pid->min_control_action = -100; 
 	
 }
 
-
+/*
 float PID_controller_get_control_action(PID_controller *pid, float error) {
 	
 	// compute control action u
@@ -80,4 +81,22 @@ float PID_controller_get_control_action(PID_controller *pid, float error) {
 	pid->prev_reference = pid->reference;
 	
 	return u_limited;
+}*/
+
+float PID_controller_get_control_action(PID_controller *pid, float error) {
+	float Kp = pid->Kp;
+	float Ti = Kp / pid->Ki;
+	float Td = pid->Kd / pid->Kp;
+	float u = pid->prev_control_action + Kp*(error - pid->prev_error + Td*(error - pid->prev_error) + (pid->loop_period/(2*Ti))*(error + pid->prev_error));
+	
+	if (u > pid->max_control_action) {
+		u = pid->max_control_action;
+	} else if (u < pid->min_control_action) {
+		u = pid->min_control_action;
+	}
+	
+	pid->prev_error = error;
+	pid->prev_control_action = u;
+	
+	return u;
 }

@@ -21,6 +21,7 @@
 		- Make it easier to switch port/pin layout
 */
 
+
 /******** Encoder left ********/
 #define ENCA1 PORTD2 // (INT0) (Arduino Uno pin 2)
 #define ENCB1 PORTD4 // (Arduino Uno pin 4)
