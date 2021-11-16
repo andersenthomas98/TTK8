@@ -21,6 +21,10 @@ static volatile int prev_ticks_right = 0;
 static volatile int prev_ticks_left = 0;
 static volatile float rad_per_s_left = 0;
 static volatile float rad_per_s_right = 0;
+static volatile float rad_per_s_left_prev = 0;
+static volatile float rad_per_s_right_prev = 0;
+static volatile float rad_per_s_left_smoothed = 0;
+static volatile float rad_per_s_right_smoothed = 0;
 
 
 // Should be updated if timer is adjusted!
@@ -80,7 +84,7 @@ void speed_estimator_init(long left, long right) {
 float speed_estimator_right_rad_per_s() {
 	float rad_per_s;
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-		rad_per_s = rad_per_s_right;
+		rad_per_s = rad_per_s_right_smoothed;
 	}
 	return rad_per_s;
 }
@@ -88,7 +92,7 @@ float speed_estimator_right_rad_per_s() {
 float speed_estimator_left_rad_per_s() {
 	float rad_per_s;
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-		rad_per_s = rad_per_s_left;
+		rad_per_s = rad_per_s_left_smoothed;
 	}
 	return rad_per_s;
 }
@@ -119,10 +123,14 @@ ISR(TIMER1_COMPA_vect) {
 	prev_ticks_right = ticks_right;
 	ticks_right = encoder_get_accumulated_ticks_right();
 	rad_per_s_right = 2.0*PI*((float)ticks_right - (float)prev_ticks_right) / ((float)ticks_per_rot_right*encoder_measurement_period);
+	rad_per_s_right_smoothed = LOW_PASS_WEIGHT * (rad_per_s_right) + (1-LOW_PASS_WEIGHT)*(rad_per_s_right_prev);
+	rad_per_s_right_prev = rad_per_s_right_smoothed;
 	
 	prev_ticks_left = ticks_left;
 	ticks_left = encoder_get_accumulated_ticks_left();
 	rad_per_s_left = 2.0*PI*((float)ticks_left - (float)prev_ticks_left) / ((float)ticks_per_rot_left*encoder_measurement_period);
+	rad_per_s_left_smoothed = LOW_PASS_WEIGHT * (rad_per_s_left) + (1-LOW_PASS_WEIGHT)*(rad_per_s_left_prev);
+	rad_per_s_left_prev = rad_per_s_left_smoothed;
 	//printf("ISR: %d | %d\n\r", ticks_left, prev_ticks_left);
 }
 

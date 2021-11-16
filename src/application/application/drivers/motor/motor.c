@@ -67,3 +67,13 @@ void motor_right(float duty) {
 	float abs_duty = abs(duty);
 	pwm_set_duty_cycle_right(abs_duty);
 }
+
+void motor_left_stop(void) {
+	PORTC &= ~(1 << OUT1);
+	PORTC &= ~(1 << OUT2);
+}
+
+void motor_right_stop(void) {
+	PORTC &= ~(1 << OUT3);
+	PORTC &= ~(1 << OUT4);
+}

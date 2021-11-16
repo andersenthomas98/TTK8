@@ -24,4 +24,8 @@ void motor_left(float duty);
 // duty is a value between -100 and 100
 void motor_right(float duty);
 
+void motor_left_stop(void);
+
+void motor_right_stop(void);
+
 #endif /* MOTOR_H_ */

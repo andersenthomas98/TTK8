@@ -57,10 +57,12 @@
 
 /************************************/
 
-#define LOW_PASS_WEIGHT 1.0
+#define LOW_PASS_WEIGHT 0.3
 
 #define DEFAULT_TICKS_PER_ROT_LEFT 850
 #define DEFAULT_TICKS_PER_ROT_RIGHT 850
+
+#define ENABLE_ANTI_WINDUP 1
 
 
 

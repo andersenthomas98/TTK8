@@ -14,6 +14,7 @@ drivers/PID_controller/PID_controller.d \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\fuse.h \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\lock.h \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\interrupt.h \
+ ../drivers/PID_controller/../../defines.h \
  ../drivers/PID_controller/PID_controller.h \
  ../drivers/PID_controller/../speed_estimator/speed_estimator.h \
  ../drivers/PID_controller/../timer/timer.h \
@@ -44,6 +45,8 @@ c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\fuse.h:
 c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\lock.h:
 
 c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\interrupt.h:
+
+../drivers/PID_controller/../../defines.h:
 
 ../drivers/PID_controller/PID_controller.h:
 

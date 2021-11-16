@@ -22,6 +22,7 @@ typedef struct {
 	float prev_control_action;
 	float max_control_action;
 	float min_control_action;
+	float u_unbounded;
 }PID_controller;
 
 

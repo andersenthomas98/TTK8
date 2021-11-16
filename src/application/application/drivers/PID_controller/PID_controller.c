@@ -6,21 +6,24 @@
  */ 
 
 #include <util/atomic.h>
+#include "../../defines.h"
 
 #include "PID_controller.h"
 #include "../speed_estimator/speed_estimator.h"
 #include "../timer/timer.h"
 #include "../misc/misc.h"
 
-float reference_speed = 0.0;
-float Kp = 0.0;
-float Ki = 0.0;
-float Kd = 0.0;
+//float reference_speed = 0.0;
+//float Kp = 0.0;
+//float Ki = 0.0;
+//float Kd = 0.0;
 
 
 
 void PID_controller_set_reference(PID_controller *pid, float ref) {
-	pid->reference = ref;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		pid->reference = ref;
+	}
 }
 
 void PID_controller_set_parameters(PID_controller *pid, float P, float I, float D, float loop_period) {
@@ -45,10 +48,11 @@ void PID_controller_init(PID_controller *pid) {
 	pid->prev_control_action = 0.0;
 	pid->max_control_action = 100;
 	pid->min_control_action = -100; 
+	pid->u_unbounded = 0;
 	
 }
 
-/*
+
 float PID_controller_get_control_action(PID_controller *pid, float error) {
 	
 	// compute control action u
@@ -62,13 +66,13 @@ float PID_controller_get_control_action(PID_controller *pid, float error) {
 	float u_limited = u;
 	if (u > pid->max_control_action) {
 		u_limited = pid->max_control_action;
-		if (pid->Ki != 0) {
+		if (pid->Ki != 0 && ENABLE_ANTI_WINDUP) {
 			pid->integral_error += (pid->loop_period / pid->Ki) * (u_limited - u); // anti-windup (Beard & McLain)
 		}
 		
 	} else if (u < pid->min_control_action) {
 		u_limited = pid->min_control_action;
-		if (pid->Ki != 0) {
+		if (pid->Ki != 0 && ENABLE_ANTI_WINDUP) {
 			pid->integral_error += (pid->loop_period / pid->Ki) * (u_limited - u); // anti-windup (Beard & McLain)
 		}
 	}
@@ -81,22 +85,46 @@ float PID_controller_get_control_action(PID_controller *pid, float error) {
 	pid->prev_reference = pid->reference;
 	
 	return u_limited;
-}*/
+}
 
+
+// Experimental
+/*
 float PID_controller_get_control_action(PID_controller *pid, float error) {
 	float Kp = pid->Kp;
 	float Ti = Kp / pid->Ki;
 	float Td = pid->Kd / pid->Kp;
-	float u = pid->prev_control_action + Kp*(error - pid->prev_error + Td*(error - pid->prev_error) + (pid->loop_period/(2*Ti))*(error + pid->prev_error));
+	pid->integral_error = error + pid->prev_error;
+	float u = pid->prev_control_action + Kp*(error - pid->prev_error + Td*(error - pid->prev_error) + (pid->loop_period/(2*Ti))*(pid->integral_error));
+	pid->u_unbounded = u;
+	float u_limited = u;
 	
-	if (u > pid->max_control_action) {
-		u = pid->max_control_action;
-	} else if (u < pid->min_control_action) {
-		u = pid->min_control_action;
+	pid->error = error;
+	
+	if (!ENABLE_ANTI_WINDUP) {
+		if (u > pid->max_control_action) {
+			u_limited = pid->max_control_action;
+		} else if (u < pid->min_control_action) {
+			u_limited = pid->min_control_action;
+		}	
+	} else {
+		if (u > pid->max_control_action) {
+			u_limited = pid->max_control_action;
+			if (pid->Ki != 0) {
+				u_limited += Kp*(pid->loop_period / (2*Ti))*(pid->integral_error) * (u / u_limited); // anti-windup (Beard & McLain)
+			}
+			
+			} else if (u < pid->min_control_action) {
+			u_limited = pid->min_control_action;
+			if (pid->Ki != 0) {
+				u_limited -= Kp*(pid->loop_period / (2*Ti))*(pid->integral_error) * (u / u_limited); // anti-windup (Beard & McLain)
+			}
+		}
+		
 	}
 	
-	pid->prev_error = error;
-	pid->prev_control_action = u;
+	pid->prev_error = pid->error;
+	pid->prev_control_action = u_limited;
 	
-	return u;
-}
+	return u_limited;
+}*/
