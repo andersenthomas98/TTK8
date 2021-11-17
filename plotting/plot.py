@@ -18,7 +18,7 @@ dict_list = []
 now = time.time()
 last = now
 
-READ_SERIAL = True
+READ_SERIAL = False
 
 if (READ_SERIAL):
     ser.open()

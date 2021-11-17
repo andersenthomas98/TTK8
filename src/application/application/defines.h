@@ -14,6 +14,7 @@
 #define F_CPU 16000000UL
 
 #define BUILTIN_LED PORTB5 // (Arduino Uno pin 13)
+#define STATUS_LED PORTD1
 
 /*
 	Be aware that the application will not function as intended if the pins are not defined on the same port as they are now
@@ -62,7 +63,7 @@
 #define DEFAULT_TICKS_PER_ROT_LEFT 850
 #define DEFAULT_TICKS_PER_ROT_RIGHT 850
 
-#define ENABLE_ANTI_WINDUP 1
+#define ENABLE_ANTI_WINDUP 0
 
 
 

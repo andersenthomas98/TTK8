@@ -42,7 +42,12 @@ void speed_estimator_test() {
 	}
 }
 
-void encoder_motor_test() {
+int encoder_motor_test() {
+	
+	usart_init(UBRR);
+	encoder_init();
+	motor_init();
+	timer_init(5000);
 	
 	long ticks_left = 0;
 	long ticks_right = 0;
@@ -70,34 +75,26 @@ void encoder_motor_test() {
 }
 
 
-
-int main(void)
-{
+int response_test() {
 	usart_init(UBRR);
 	speed_estimator_init(840, 850);
-
 	motor_init();
 
 	
 	float T = 0.02; // Control loop period [s]
-	timer_init(T*1000); 
-	
-	printf("Starting application\n\r");
-	
+	timer_init(T*1000);
 	
 	PID_controller left_motor;
 	PID_controller right_motor;
 	PID_controller_init(&left_motor);
 	PID_controller_init(&right_motor);
-	//PID_controller_set_parameters(&left_motor, 10.0, 50.0, 0.0, 0.05);
-	//PID_controller_set_parameters(&right_motor, 10.0, 50.0, 0.0, 0.05);
 	PID_controller_set_parameters(&left_motor, 10.0, 50.0, 0.0, T);
 	PID_controller_set_parameters(&right_motor, 10.0, 50.0, 0.0, T);
 	
 	
 	float left_error_rps; // left wheel speed error [rad/s]
 	float left_speed_rps; // left wheel speed [rad/s]
-	float left_speed_ref_rps = DEG2RAD*500; // left wheel reference speed [rad/s]. 9.86 rad/s = 565 deg/s is max speed.
+	float left_speed_ref_rps = DEG2RAD*700; // left wheel reference speed [rad/s]. 9.86 rad/s = 565 deg/s is max speed.
 	float left_u; // left wheel speed control action
 	
 	float right_error_rps; // right wheel error [rad/s]
@@ -107,11 +104,12 @@ int main(void)
 
 	int send_flag = 0;
 	unsigned long time=0;
-	unsigned long change_ref_time = 10000;
+	unsigned long change_ref_time = 5000;
 	
 	float refs[2] = {DEG2RAD*(-500), DEG2RAD*(100)};
 
 	int i = 0;
+
 	
 	while(1)
 	{
@@ -145,14 +143,26 @@ int main(void)
 			}
 			
 			send_flag = 1;
-		} 
+		}
 		
 		if (send_flag) {
-			printf("{\"t\":%lu,\"l\":{\"ref\":%.2f,\"y\":%.2f,\"ulim\":%.2f},\"r\":{\"ref\":%.2f,\"y\":%.2f,\"ulim\":%.2f}}\n", time, left_speed_ref_rps, left_speed_rps, left_u, right_speed_ref_rps, right_speed_rps, right_u);
+			printf("{\"t\":%lu,\"l\":{\"ref\":%.2f,\"y\":%.2f,\"ulim\":%.2f},\"r\":{\"ref\":%.2f,\"y\":%.2f,\"ulim\":%.2f}}\n", 
+				time, left_speed_ref_rps, left_speed_rps, left_u, right_speed_ref_rps, right_speed_rps, right_u);
 			send_flag = 0;
 		}
 	}
 	
+	
+}
+
+
+int main(void)
+{
+	
+	//encoder_motor_test();
+	//speed_estimator_test();
+	
+	response_test();
 	
 	return 0;
 }
